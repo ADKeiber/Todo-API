@@ -81,8 +81,19 @@
 		    <artifactId>jackson-datatype-jsr310</artifactId>
 		    <version>2.18.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>6.3.4</version>
+		</dependency>
 
 
+		<dependency>
+			<groupId>com.adk</groupId>
+			<artifactId>blog</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
