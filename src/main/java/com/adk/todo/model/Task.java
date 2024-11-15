@@ -6,6 +6,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +22,6 @@ public class Task {
 	private String id;
 	private String description;
 	private TaskStatus status;
+	@OneToMany(mappedBy="id")
+	private List<Subtask> subtasks;
 }
