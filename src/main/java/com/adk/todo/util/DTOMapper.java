@@ -44,7 +44,7 @@ public class DTOMapper {
 	public static SubtaskDTO mapToDTO(Subtask subtask) {
 		SubtaskDTO subtaskDTO = new SubtaskDTO();
 		subtaskDTO.setId(subtask.getId());
-		subtaskDTO.setParentTaskId(subtask.getParentTask().getId());
+		subtaskDTO.setParentTaskId(subtask.getParentTaskId());
 		subtaskDTO.setDescription(subtask.getDescription());
 		subtaskDTO.setStatus(subtask.getStatus());
 		return subtaskDTO;

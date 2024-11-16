@@ -6,6 +6,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -30,6 +31,6 @@ public class Task {
 
     private String userId;
 	
-	@OneToMany(mappedBy="parentTask")
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Subtask> subtasks;
 }

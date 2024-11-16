@@ -14,4 +14,6 @@ public interface TaskRepo extends ListCrudRepository<Task, String>{
 	
 	@Query("SELECT t FROM Task t WHERE t.userId = :userId AND t.status = :status")
 	public List<Task> getTasksByStatusForUser(String userId, TaskStatus status);
+	@Query("SELECT t FROM Task t WHERE t.userId = :userId")
+	public List<Task> getTasksByUser(String userId);
 }

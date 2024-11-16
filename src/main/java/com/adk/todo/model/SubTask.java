@@ -23,9 +23,6 @@ public class Subtask {
 	private String id;
 	private String description;
 	private TaskStatus status;
-	
-	@ManyToOne
-    @JoinColumn(name="parent_id", nullable=false)
-	private Task parentTask;
+	private String parentTaskId;
 	
 }
