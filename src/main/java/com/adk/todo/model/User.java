@@ -7,6 +7,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import com.adk.blog.model.Tag;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -28,8 +29,9 @@ public class User {
 	private String id;
 	private String username;
 	private String password;
-	
-	@OneToMany(mappedBy="user")
+	@OneToMany(cascade=CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 	private List<Task> tasks;
 	
 }

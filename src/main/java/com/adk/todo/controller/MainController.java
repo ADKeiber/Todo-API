@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @SpringBootApplication
 @RestController
 @Tag(name = "Todo API Endpoints")
-public class UserController {
+public class MainController {
 
 	@Autowired
 	private UserService userService;

@@ -27,11 +27,8 @@ public class Task {
 	private String id;
 	private String description;
 	private TaskStatus status;
-	
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name="user_id", nullable=false)
-//	@JsonIgnoreProperties({"username", "password", "tasks"})
-	private User user;
+
+    private String userId;
 	
 	@OneToMany(mappedBy="parentTask")
 	private List<Subtask> subtasks;
