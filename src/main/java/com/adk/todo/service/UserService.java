@@ -1,11 +1,14 @@
 package com.adk.todo.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.adk.blog.errorhandling.EntityNotFoundException;
 import com.adk.todo.errorhandling.IncorrectPasswordException;
+import com.adk.todo.model.Task;
 import com.adk.todo.model.User;
 import com.adk.todo.repo.UserRepo;
 
@@ -37,6 +40,19 @@ public class UserService implements IUserService {
 		returnedUser.setPassword(null);
 		return returnedUser;
 	}
-	
-	
+
+	@Override
+	public User getUserById(String id) throws Exception {
+		return userRepo.findById(id).get();
+	}
+
+	@Override
+	public User addTaskToUser(User user, Task task) {
+		List<Task> tasks = user.getTasks();
+		tasks.add(task);
+		user.setTasks(tasks);
+		User savedUser = userRepo.save(user);
+		savedUser.setPassword(null);
+		return savedUser;
+	}
 }

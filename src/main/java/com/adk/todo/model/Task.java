@@ -4,8 +4,13 @@ import java.util.List;
 
 import org.hibernate.annotations.UuidGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -22,6 +27,13 @@ public class Task {
 	private String id;
 	private String description;
 	private TaskStatus status;
-	@OneToMany(mappedBy="id")
+	
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name="user_id", nullable=false)
+	@JoinColumn(name = "department_id", nullable = true)
+	@JsonIgnoreProperties({"username", "password", "tasks"})
+	private User user;
+	
+	@OneToMany(mappedBy="parentTask")
 	private List<Subtask> subtasks;
 }
