@@ -16,5 +16,5 @@ public class TaskDTO {
 	String userId;
 	String description;
 	TaskStatus status;
-	List<SubTaskDTO> subtasks;
+	List<SubtaskDTO> subtasks;
 }

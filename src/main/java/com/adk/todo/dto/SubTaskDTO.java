@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor
-public class SubTaskDTO {
+public class SubtaskDTO {
 	String id;
 	String parentTaskId;
 	String description;
