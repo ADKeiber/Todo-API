@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.adk.todo.model.Subtask;
 import com.adk.todo.model.Task;
+import com.adk.todo.model.TaskStatus;
 import com.adk.todo.model.User;
 import com.adk.todo.service.TaskService;
 import com.adk.todo.service.UserService;
@@ -50,13 +52,21 @@ public class MainController {
 		return new ResponseEntity<>(userService.addTaskToUser(user,task), HttpStatus.OK);
 	}
 	
-	@PostMapping("/updateTask")
-	public ResponseEntity<Object> updateTaskStatsu(@RequestBody Task task) throws Exception {
+	@PostMapping("/updateTask/{taskId}")
+	public ResponseEntity<Object> updateTaskStatus(@PathVariable String taskId, @RequestBody Task task) throws Exception {
+		task.setId(taskId);
 		return new ResponseEntity<>(taskService.updateTask(task), HttpStatus.OK);
 	}
 	
-	@PostMapping("/getTasks/{userId}")
-	public ResponseEntity<Object> getTaskByStatus(@PathVariable String userId, @RequestBody Task task) throws Exception {
-		return new ResponseEntity<>(taskService.updateTask(task), HttpStatus.OK);
+	@PostMapping("/addSubtask/{taskId}")
+	public ResponseEntity<Object> addSubtask(@PathVariable String taskId, @RequestBody Subtask subtask) throws Exception {
+		Task task = taskService.getTaskById(taskId);
+		return new ResponseEntity<>(taskService.addSubtaskToTask(task, subtask), HttpStatus.OK);
+	}
+	
+	@PostMapping("/updateSubtask/{subtaskId}")
+	public ResponseEntity<Object> updateSubtaskStatus(@PathVariable String subtaskId, @RequestBody Subtask subtask) throws Exception {
+		subtask.setId(subtaskId);
+		return new ResponseEntity<>(taskService.updateTask(subtask), HttpStatus.OK);
 	}
 }

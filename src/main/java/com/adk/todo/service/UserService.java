@@ -52,6 +52,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDTO addTaskToUser(User user, Task task) {
+		//TODO Check task 
 		List<Task> tasks = user.getTasks();
 		tasks.add(task);
 		user.setTasks(tasks);

@@ -30,8 +30,6 @@ public class User {
 	private String username;
 	private String password;
 	@OneToMany(cascade=CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-//    private User user;
 	private List<Task> tasks;
 	
 }
