@@ -30,8 +30,7 @@ public class Task {
 	
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="user_id", nullable=false)
-	@JoinColumn(name = "department_id", nullable = true)
-	@JsonIgnoreProperties({"username", "password", "tasks"})
+//	@JsonIgnoreProperties({"username", "password", "tasks"})
 	private User user;
 	
 	@OneToMany(mappedBy="parentTask")

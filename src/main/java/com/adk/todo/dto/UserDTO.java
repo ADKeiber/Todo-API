@@ -1,5 +1,15 @@
 package com.adk.todo.dto;
 
-public class UserDTO {
+import java.util.List;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Data @NoArgsConstructor @AllArgsConstructor
+public class UserDTO {	
+	String id;
+	String username;
+	List<TaskDTO> tasks;
 }
