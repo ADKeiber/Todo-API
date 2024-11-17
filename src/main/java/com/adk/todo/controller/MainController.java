@@ -41,7 +41,7 @@ public class MainController {
 	@Autowired
 	private TaskService taskService;
 
-	@Operation(summary = "Create a new user login", description = "Creates a new user by taking in a JSON User Object. If required fields are blank/null inside of the request body or username already exists with an API Error will be returned. Fields Required: username, password", responses = {
+	@Operation(summary = "Create a new user login", description = "Creates a new user by taking in a JSON User Object. If required fields are blank/null inside of the request body or username already exists an API Error will be returned. Fields Required: username, password", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\n" + "	\"id\":\"1024c237-0938-43bc-9c4e-f533ae5a22e6\",\n"
 							+ "	\"username\":\"Example Username\",\n" + "	\"tasks\":\"[]\"\n" + "}") })),
@@ -61,7 +61,7 @@ public class MainController {
 		return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
 	}
 
-	@Operation(summary = "Log in and authenticate user", description = "Allows a user to log in by taking in a JSON User Object. If required fields are blank/null inside of the request body or password is incorrect already exists with an API Error will be returned. Fields Required: username, password", responses = {
+	@Operation(summary = "Log in and authenticate user", description = "Allows a user to log in by taking in a JSON User Object. If required fields are blank/null inside of the request body, the password is incorrect, or the username doesn't exist an API Error will be returned. Fields Required: username, password", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
 							+ "    \"username\": \"admin\",\r\n" + "    \"tasks\": [\r\n" + "        {\r\n"
@@ -81,7 +81,7 @@ public class MainController {
 			@ApiResponse(description = "Not Found/ No User with that username", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
 					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
 							+ "		\"status\":\"NOT_FOUND\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
-							+ "		\"message\": \"Tag was not found for parameters {username=Example Username}\",\n"
+							+ "		\"message\": \"User was not found for parameters {username=Example Username}\",\n"
 							+ "		\"debugMessage\":null,\n" + "	}\n" + "}") })),
 			@ApiResponse(description = "Unauthorized/ Incorrect Password", responseCode = "401", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
 					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
@@ -128,7 +128,7 @@ public class MainController {
 		return new ResponseEntity<>(taskService.getTaskByStatusesAndUser(userId, statuses), HttpStatus.OK);
 	}
 
-	@Operation(summary = "Add a task to a user", description = "Adds a task to a user by taking in a JSON Task Object and a userId. If required fields are blank/null inside of the request body or userId doesn't exist an API Error will be returned. Fields Required: username, password", responses = {
+	@Operation(summary = "Add a task to a user", description = "Adds a task to a user by taking in a JSON Task Object and a userId. If required fields are blank/null inside of the request body or userId doesn't exist an API Error will be returned. Fields Required: description, status", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
 							+ "    \"username\": \"admin\",\r\n" + "    \"tasks\": [\r\n" + "        {\r\n"
@@ -145,14 +145,14 @@ public class MainController {
 					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
 							+ "		\"status\":\"BAD_REQUEST\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
 							+ "		\"message\":\"One of the Required fields was missing for the passed in entity!\",\n"
-							+ "		\"debugMessage\":\"Task was missing value of field 'username' which is of class java.lang.String\",\n"
+							+ "		\"debugMessage\":\"Task was missing value of field 'description' which is of class java.lang.String\",\n"
 							+ "	}\n" + "}") })), })
 	@PostMapping("/addTask/{userId}")
 	public ResponseEntity<Object> addTask(@PathVariable String userId, @RequestBody Task task) throws Exception {
 		return new ResponseEntity<>(userService.addTaskToUser(userService.getUserById(userId), task), HttpStatus.OK);
 	}
 
-	@Operation(summary = "Update existing task", description = "Updates an existing task by taking in a JSON Task Object. If required fields are blank/null inside of the request body or userId doesn't exist an API Error will be returned. Fields Required: description, status, userId", responses = {
+	@Operation(summary = "Update existing task", description = "Updates an existing task by taking in a JSON Task Object. If required fields are blank/null inside of the request body or post.userId doesn't exist an API Error will be returned. Fields Required: description, status, userId", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
 							+ "    \"userId\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
@@ -174,7 +174,7 @@ public class MainController {
 		return new ResponseEntity<>(taskService.updateTask(task), HttpStatus.OK);
 	}
 
-	@Operation(summary = "Add a subtask to a task", description = "Adds a subtask to a task by taking in a JSON Subtask Object and a userId. If required fields are blank/null inside of the request body or taskId doesn't exist an API Error will be returned. Fields Required: description, status", responses = {
+	@Operation(summary = "Add a subtask to a task", description = "Adds a subtask to a task by taking in a JSON Subtask Object and a taskId. If required fields are blank/null inside of the request body or taskId doesn't exist an API Error will be returned. Fields Required: description, status", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
 							+ "    \"userId\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
@@ -202,13 +202,13 @@ public class MainController {
 				HttpStatus.OK);
 	}
 
-	@Operation(summary = "Update existing subtask", description = "Updates an existing subtask by taking in a JSON Subtask Object. If required fields are blank/null inside of the request body or parentTaskId doesn't exist an API Error will be returned. Fields Required: description, status, parentTaskId", responses = {
+	@Operation(summary = "Update existing subtask", description = "Updates an existing subtask by taking in a JSON Subtask Object. If required fields are blank/null inside of the request body or parentTaskId doesn't exist an API Error will be returned. Fields Required: description, status, subtask.parentTaskId", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"02735e20-19ac-4f46-b22d-df463c4a7595\",\r\n"
 							+ "    \"parentTaskId\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
 							+ "    \"description\": \"Subtask 1\",\r\n" + "    \"status\": \"IN_PROGRESS\"\r\n"
 							+ "}") })),
-			@ApiResponse(description = "Not Found/ No User with that id", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+			@ApiResponse(description = "Not Found/ No Task with that id", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
 					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
 							+ "		\"status\":\"NOT_FOUND\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
 							+ "		\"message\": \"Task was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
