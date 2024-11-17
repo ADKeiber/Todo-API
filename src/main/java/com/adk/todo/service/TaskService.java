@@ -34,6 +34,10 @@ public class TaskService implements ITaskService{
 
 	@Override
 	public TaskDTO updateTask(Task task) {
+		
+		if( task.getUserId() == null || task.getUserId().isBlank())
+			throw new FieldBlankException(Task.class, "userId", String.class.toString());
+		
 		Optional<Task> idTask = taskRepo.findById(task.getId());
 		
 		//Verifies task id exists in repo
