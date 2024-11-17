@@ -9,10 +9,9 @@ import com.adk.todo.model.Task;
 import com.adk.todo.model.TaskStatus;
 
 public interface ITaskService {
-	public Task updateTask(Task task);
-	public List<Task> getTaskByStatusesAndUser(String userId, List<TaskStatus> status);
+	public TaskDTO updateTask(Task task);
+	public List<TaskDTO> getTaskByStatusesAndUser(String userId, List<TaskStatus> status);
 	public Task getTaskById(String taskId);
 	public TaskDTO addSubtaskToTask(Task task, Subtask subtask);
 	public SubtaskDTO updateSubtask(Subtask subtask);
-	public List<Task> getTasksByUser(String userId);
 }

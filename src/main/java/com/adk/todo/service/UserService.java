@@ -2,15 +2,18 @@ package com.adk.todo.service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.adk.blog.errorhandling.EntityNotFoundException;
 import com.adk.todo.dto.UserDTO;
+import com.adk.todo.errorhandling.FieldBlankException;
 import com.adk.todo.errorhandling.IncorrectPasswordException;
+import com.adk.todo.errorhandling.UsernameAlreadyExistsException;
 import com.adk.todo.model.Task;
+import com.adk.todo.model.TaskStatus;
 import com.adk.todo.model.User;
 import com.adk.todo.repo.UserRepo;
 import com.adk.todo.util.DTOMapper;
@@ -25,8 +28,13 @@ public class UserService implements IUserService {
 	private final PasswordEncoder passwordEncoder;
 	
 	@Override
-	public UserDTO saveUser(User user) throws Exception {
-		//Check to see if user exists by ID first then throw exception
+	public UserDTO createUser(User user) throws Exception {
+		
+		//Checks if user exists with a specific username
+		User userWithUsername = userRepo.findByUsername(user.getUsername());
+		if(userWithUsername != null)
+			throw new UsernameAlreadyExistsException(user.getUsername());
+		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setTasks(new LinkedList<Task>());
 		User returnedUser = userRepo.save(user);
@@ -35,29 +43,43 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDTO login(User user) throws Exception {
+		
 		User returnedUser = userRepo.findByUsername(user.getUsername());
+		
+		//Verifies user exists then verifies the password (after being decoded) is the same as passed in password
 		if(returnedUser == null){
 			throw new EntityNotFoundException(User.class, "username", user.getUsername());
 		} else if(!passwordEncoder.matches(user.getPassword(), returnedUser.getPassword())) {
 			throw new IncorrectPasswordException(user.getUsername());
 		}
-		System.out.println("User: " + returnedUser.toString());
+		
 		return DTOMapper.mapToDTO(returnedUser);
 	}
 
 	@Override
 	public User getUserById(String id) throws Exception {
-		return userRepo.findById(id).get();
+		Optional<User> user = userRepo.findById(id);
+		
+		//Verifies user Exists
+		if(user.isEmpty())
+			throw new EntityNotFoundException(User.class, "User ID", id);
+		
+		return user.get();
 	}
 
 	@Override
 	public UserDTO addTaskToUser(User user, Task task) {
-		//TODO Check task 
+		
+		//Verifies Required fields are present in task object
+		if( task.getDescription() == null || task.getDescription().isBlank())
+			throw new FieldBlankException(Task.class, "Description", String.class.toString());
+		if( task.getStatus() == null)
+			throw new FieldBlankException(Task.class, "Status", TaskStatus.class.toString());
+		
 		List<Task> tasks = user.getTasks();
 		tasks.add(task);
 		user.setTasks(tasks);
 		task.setUserId(user.getId());
-		System.out.println("User: " + user.toString());
 		User savedUser = userRepo.save(user);
 		return DTOMapper.mapToDTO(savedUser);
 	}

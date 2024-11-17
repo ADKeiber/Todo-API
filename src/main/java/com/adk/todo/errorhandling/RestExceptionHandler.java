@@ -69,20 +69,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getSupportedMediaTypes().forEach(t -> builder.append(t).append(", "));
         return buildResponseEntity(new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, builder.substring(0, builder.length() - 2), ex));
     }
-
-    /**
-     * Handles EntityNotFoundException. Created to encapsulate errors with more detail than EntityNotFoundException.
-     *
-     * @param ex the EntityNotFoundException
-     * @return the ApiError object
-     */
-    @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        ApiError apiError = new ApiError(NOT_FOUND);
-        apiError.setMessage(ex.getMessage());
-        return buildResponseEntity(apiError);
-    }
-
+    
     /**
      * Handle HttpMessageNotReadableException. Happens when request JSON is malformed.
      *
@@ -171,6 +158,49 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("One of the Required fields was missing for the passed in entity!");
         apiError.setDebugMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    ////////////////////////////////////////
+    ////////// Custom Exceptions ///////////
+    ////////////////////////////////////////
+    
+    /**
+     * Handles EntityNotFoundException. Created to encapsulate errors with more detail than EntityNotFoundException.
+     *
+     * @param ex the EntityNotFoundException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+        ApiError apiError = new ApiError(NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+    
+    /**
+     * Handles UsernameAlreadyExistsException. Created to encapsulate errors with more detail than UsernameAlreadyExistsException.
+     *
+     * @param ex the UsernameAlreadyExistsException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+    
+    /**
+     * Handles IncorrectPasswordException. Created to encapsulate errors with more detail than IncorrectPasswordException.
+     *
+     * @param ex the UsernameAlreadyExistsException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(IncorrectPasswordException.class)
+    protected ResponseEntity<Object> handleIncorrectPassword(IncorrectPasswordException ex) {
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
+        apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 

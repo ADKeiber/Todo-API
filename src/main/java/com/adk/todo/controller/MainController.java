@@ -1,20 +1,15 @@
 package com.adk.todo.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +35,7 @@ public class MainController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> create(@RequestBody User user) throws Exception {
-		return new ResponseEntity<>(userService.saveUser(user), HttpStatus.OK);
+		return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
 	}
 	
 	@GetMapping("/login")
@@ -55,8 +50,7 @@ public class MainController {
 	
 	@PostMapping("/addTask/{userId}")
 	public ResponseEntity<Object> addTask(@PathVariable String userId, @RequestBody Task task) throws Exception {
-		User user = userService.getUserById(userId);
-		return new ResponseEntity<>(userService.addTaskToUser(user,task), HttpStatus.OK);
+		return new ResponseEntity<>(userService.addTaskToUser(userService.getUserById(userId), task), HttpStatus.OK);
 	}
 	
 	@PostMapping("/updateTask")
@@ -66,8 +60,7 @@ public class MainController {
 	
 	@PostMapping("/addSubtask/{taskId}")
 	public ResponseEntity<Object> addSubtask(@PathVariable String taskId, @RequestBody Subtask subtask) throws Exception {
-		Task task = taskService.getTaskById(taskId);
-		return new ResponseEntity<>(taskService.addSubtaskToTask(task, subtask), HttpStatus.OK);
+		return new ResponseEntity<>(taskService.addSubtaskToTask(taskService.getTaskById(taskId), subtask), HttpStatus.OK);
 	}
 	
 	@PostMapping("/updateSubtask")

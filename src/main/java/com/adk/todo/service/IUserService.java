@@ -6,7 +6,7 @@ import com.adk.todo.model.User;
 
 public interface IUserService {
 
-	public UserDTO saveUser(User user) throws Exception;
+	public UserDTO createUser(User user) throws Exception;
 	
 	public UserDTO login(User user) throws Exception;
 	
