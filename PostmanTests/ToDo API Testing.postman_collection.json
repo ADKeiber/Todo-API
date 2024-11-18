@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "8400da5d-87e5-4b92-b130-03336e64ea5c",
+		"name": "ToDo API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16694008"
+	},
+	"item": [
+		{
+			"name": "Create New Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\" : \"admin12\",\r\n  \"password\" : \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/createUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"createUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\" : \"admin\",\r\n  \"password\" : \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tasks By User Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\" : \"admin\",\r\n  \"password\" : \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/getTasks/1c7740e6-89c8-4a00-9373-7a944acf6844",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getTasks",
+						"1c7740e6-89c8-4a00-9373-7a944acf6844"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task By User Id and Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\" : \"admin\",\r\n  \"password\" : \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/getTasks/1c7740e6-89c8-4a00-9373-7a944acf6844?statuses=IN_PROGRESS&statuses=TODO",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getTasks",
+						"1c7740e6-89c8-4a00-9373-7a944acf6844"
+					],
+					"query": [
+						{
+							"key": "statuses",
+							"value": "IN_PROGRESS"
+						},
+						{
+							"key": "statuses",
+							"value": "TODO"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Task to User via ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\" : \"Task 3\",\r\n  \"status\" : \"TODO\",\r\n  \"subtasks\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/addTask/1c7740e6-89c8-4a00-9373-7a944acf6844",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addTask",
+						"1c7740e6-89c8-4a00-9373-7a944acf6844"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n    \"userId\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n    \"description\" : \"Task 2\",\r\n    \"status\" : \"IN_PROGRESS\",\r\n    \"subtasks\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/updateTask",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"updateTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Subtask to Task via ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\" : \"Subtask 2\",\r\n  \"status\" : \"TODO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/addSubtask/ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addSubtask",
+						"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Subtask via ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"02735e20-19ac-4f46-b22d-df463c4a7595\",\r\n    \"description\" : \"Subtask 1\",\r\n    \"status\" : \"IN_PROGRESS\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/updateSubtask",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"updateSubtask"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
