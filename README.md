@@ -5,7 +5,7 @@ TODO API that allows a user to complete CRUD operations on data in an SQL databa
 # Overview
 This application is part of a learning experience and is the 2nd project for my backend portfolio. The TODO API is a simple application that allows a User to perform CRUD operations on a database that stores Users, Tasks, and Subtasks. <be>
 <p>
-  NOTE: No options for deleting tasks for now (might not update)
+  NOTE: Options to delete user, tasks, and subtasks were added after screenshots below and testing suite in Postman
 </p>
 
 Notable things about the application: <br>
