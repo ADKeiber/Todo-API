@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Database object for task
+ */
 @Entity
 @Table(name="Task")
 @Data @NoArgsConstructor @AllArgsConstructor

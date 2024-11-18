@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Database object for subtask
+ */
 @Entity
 @Table(name="SubTask")
 @Data @NoArgsConstructor @AllArgsConstructor

@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object for user
+ */
 @Data @NoArgsConstructor @AllArgsConstructor
 public class UserDTO {	
 	String id;

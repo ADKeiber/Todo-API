@@ -20,6 +20,9 @@ import com.adk.todo.repo.TaskRepo;
 import com.adk.todo.repo.UserRepo;
 import com.adk.todo.util.DTOMapper;
 
+/**
+ * Implementation of the task service interface
+ */
 @Service
 public class TaskService implements ITaskService{
 	
@@ -32,6 +35,9 @@ public class TaskService implements ITaskService{
 	@Autowired
 	private UserRepo userRepo; 
 
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public TaskDTO updateTask(Task task) {
 		
@@ -57,6 +63,9 @@ public class TaskService implements ITaskService{
 		return DTOMapper.mapToDTO(returnedTask);
 	}
 	
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public List<TaskDTO> getTaskByStatusesAndUser(String userId, List<TaskStatus> status) {
 		
@@ -81,6 +90,9 @@ public class TaskService implements ITaskService{
 		return tasksDTO;
 	}
 	
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public Task getTaskById(String taskId) {
 		Optional<Task> task = taskRepo.findById(taskId);
@@ -90,6 +102,9 @@ public class TaskService implements ITaskService{
 		return task.get();
 	}
 
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public TaskDTO addSubtaskToTask(Task task, Subtask subtask) {
 		//Verifies Required fields are present in subtask object
@@ -105,6 +120,9 @@ public class TaskService implements ITaskService{
 		return DTOMapper.mapToDTO(savedTask);
 	}
 	
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public SubtaskDTO updateSubtask(Subtask subtask) {
 		

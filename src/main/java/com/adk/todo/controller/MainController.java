@@ -41,6 +41,12 @@ public class MainController {
 	@Autowired
 	private TaskService taskService;
 
+	/**
+	 * Takes in a new user and saves it to the database
+	 * @param user	{@link User} The new user to be saved
+	 * @return {@link ApiError} if there is an error creating the user, otherwise {@link UserDTO}
+	 * @throws Exception if username or password is missing, or user with passed in username already exists in the database
+	 */
 	@Operation(summary = "Create a new user login", description = "Creates a new user by taking in a JSON User Object. If required fields are blank/null inside of the request body or username already exists an API Error will be returned. Fields Required: username, password", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\n" + "	\"id\":\"1024c237-0938-43bc-9c4e-f533ae5a22e6\",\n"
@@ -61,6 +67,12 @@ public class MainController {
 		return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
 	}
 
+	/**
+	 * Authenticates the user has the correct username and password combo
+	 * @param user {@link User} the user to authenticate
+	 * @return {@link ApiError} if there is an error authenticating the user, otherwise {@link UserDTO}
+	 * @throws Exception if username or password is missing, user doesn't exist in the database, or the password doesn't match the password in the DB
+	 */
 	@Operation(summary = "Log in and authenticate user", description = "Allows a user to log in by taking in a JSON User Object. If required fields are blank/null inside of the request body, the password is incorrect, or the username doesn't exist an API Error will be returned. Fields Required: username, password", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
@@ -99,6 +111,13 @@ public class MainController {
 		return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
 	}
 
+	/**
+	 * Gets the tasks of a user by the UserID. The user can pass in statuses to filter tasks based on their status
+	 * @param userId {@link String} the userId to get the tasks of
+	 * @param statuses {@link TaskStatus} optional task status that allows the user to filter based on specific statuses 
+	 * @return {@link ApiError} if there is an error retrieving the user, otherwise list {@link TaskDTO}
+	 * @throws Exception if user doesn't exist with the given userId
+	 */
 	@Operation(summary = "Get tasks for a user", description = "Retrieves a list of tasks based on userID and optional status filters. "
 			+ "If user can't be found with given userId an API Error will be returned.", responses = {
 					@ApiResponse(description = "Success", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Task.class)), examples = {
@@ -123,11 +142,17 @@ public class MainController {
 									+ "		\"message\": \"User was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
 									+ "		\"debugMessage\":null,\n" + "	}\n" + "}") })), })
 	@GetMapping("/getTasks/{userId}")
-	public ResponseEntity<Object> getTasksByUserId(@PathVariable String userId,
-			@RequestParam(required = false) List<TaskStatus> statuses) throws Exception {
+	public ResponseEntity<Object> getTasksByUserId(@PathVariable String userId, @RequestParam(required = false) List<TaskStatus> statuses) throws Exception {
 		return new ResponseEntity<>(taskService.getTaskByStatusesAndUser(userId, statuses), HttpStatus.OK);
 	}
 
+	/**
+	 * Adds a task to a user based on UserId
+	 * @param userId {@link String} the ID of the user to add the task to
+	 * @param task {@link Task} the task to add to the user
+	 * @return {@link ApiError} if there is an error retrieving the user or required fields are missing from the task, otherwise {@link UserDTO}
+	 * @throws Exception if user doesn't exists with the passed in id, or the task is missing its description/status
+	 */
 	@Operation(summary = "Add a task to a user", description = "Adds a task to a user by taking in a JSON Task Object and a userId. If required fields are blank/null inside of the request body or userId doesn't exist an API Error will be returned. Fields Required: description, status", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
@@ -152,6 +177,14 @@ public class MainController {
 		return new ResponseEntity<>(userService.addTaskToUser(userService.getUserById(userId), task), HttpStatus.OK);
 	}
 
+	/**
+	 * Updates a task
+	 * <p>
+	 * NOTE: Task is updated based on the ID that is part of the passed in Task
+	 * @param task {@link Task} the task getting updated
+	 * @return {@link ApiError} if there is an error finding the task with the Id in passed in Task, otherwise {@link TaskDTO}
+	 * @throws Exception if task with the passed in id doesn't exist, or the task is missing its description/status
+	 */
 	@Operation(summary = "Update existing task", description = "Updates an existing task by taking in a JSON Task Object. If required fields are blank/null inside of the request body or post.userId doesn't exist an API Error will be returned. Fields Required: description, status, userId", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
@@ -174,6 +207,13 @@ public class MainController {
 		return new ResponseEntity<>(taskService.updateTask(task), HttpStatus.OK);
 	}
 
+	/**
+	 * Adds a subtask to a task with the passed in ID
+	 * @param taskId {@link String} the id of the task the subtask will be added to
+	 * @param subtask {@link Subtask} the subtask to add to the task
+	 * @return {@link ApiError} if there is an error finding the task with the Id or subtask is missing required fields, otherwise {@link TaskDTO}
+	 * @throws Exception if task with given id doesn't exists, or subtask is missing required fields (description and status)
+	 */
 	@Operation(summary = "Add a subtask to a task", description = "Adds a subtask to a task by taking in a JSON Subtask Object and a taskId. If required fields are blank/null inside of the request body or taskId doesn't exist an API Error will be returned. Fields Required: description, status", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
@@ -202,6 +242,14 @@ public class MainController {
 				HttpStatus.OK);
 	}
 
+	/**
+	 * Updates a subtask
+	 * <p>
+	 * NOTE: Subtask is updated based on the ID that is part of the passed in Subtask
+	 * @param subtask {@link Subtask} the subtask to update
+	 * @return {@link ApiError} if there is an error finding the subtask with the Id or subtask is missing required fields, otherwise {@link TaskDTO}
+	 * @throws Exception if subtask with the passed in id doesn't exist or the subtask is missing its description/status
+	 */
 	@Operation(summary = "Update existing subtask", description = "Updates an existing subtask by taking in a JSON Subtask Object. If required fields are blank/null inside of the request body or parentTaskId doesn't exist an API Error will be returned. Fields Required: description, status, subtask.parentTaskId", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
 					@ExampleObject(value = "{\r\n" + "    \"id\": \"02735e20-19ac-4f46-b22d-df463c4a7595\",\r\n"

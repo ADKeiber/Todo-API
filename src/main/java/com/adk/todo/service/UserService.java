@@ -27,8 +27,11 @@ public class UserService implements IUserService {
 	private final UserRepo userRepo;
 	private final PasswordEncoder passwordEncoder;
 	
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
-	public UserDTO createUser(User user) throws Exception {
+	public UserDTO createUser(User user){
 		
 		//Checks required fields
 		if( user.getUsername() == null || user.getUsername().isBlank())
@@ -47,8 +50,11 @@ public class UserService implements IUserService {
 		return DTOMapper.mapToDTO(returnedUser);
 	}
 
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
-	public UserDTO login(User user) throws Exception {
+	public UserDTO login(User user){
 		
 		User returnedUser = userRepo.findByUsername(user.getUsername());
 		
@@ -62,8 +68,11 @@ public class UserService implements IUserService {
 		return DTOMapper.mapToDTO(returnedUser);
 	}
 
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
-	public User getUserById(String id) throws Exception {
+	public User getUserById(String id){
 		Optional<User> user = userRepo.findById(id);
 		
 		//Verifies user Exists
@@ -72,7 +81,9 @@ public class UserService implements IUserService {
 		
 		return user.get();
 	}
-
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public UserDTO addTaskToUser(User user, Task task) {
 		

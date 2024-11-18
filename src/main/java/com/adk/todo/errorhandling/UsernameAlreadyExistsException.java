@@ -1,7 +1,7 @@
 package com.adk.todo.errorhandling;
 
 /**
- * 
+ * Exception that handles a username already existing inside of a database
  */
 public class UsernameAlreadyExistsException extends RuntimeException {
 

@@ -12,9 +12,17 @@ import com.adk.todo.model.Subtask;
 import com.adk.todo.model.Task;
 import com.adk.todo.model.User;
 
+/**
+ * Mapping class that helps Database entity objects map into the Data transfer object equivalent
+ */
 @Component
 public class DTOMapper {
 	
+	/**
+	 * Maps a {@link User} to a {@link UserDTO}
+	 * @param user {@link User} the user to map
+	 * @return {@link UserDTO} the mapped result of the user
+	 */
 	public static UserDTO mapToDTO(User user) {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(user.getId());
@@ -27,6 +35,11 @@ public class DTOMapper {
 		return userDTO;
 	}
 	
+	/**
+	 * Maps a {@link Task} to a {@link TaskDTO}
+	 * @param task {@link Task} the task to map
+	 * @return {@link TaskDTO} the mapped result of the task
+	 */
 	public static TaskDTO mapToDTO(Task task) {
 		TaskDTO taskDTO = new TaskDTO();
 		taskDTO.setId(task.getId());
@@ -41,6 +54,11 @@ public class DTOMapper {
 		return taskDTO;
 	}
 	
+	/**
+	 * Maps a {@link Subtask} to a {@link SubTaskDTO}
+	 * @param subtask {@link Subtask} the subtask to map
+	 * @return {@link SubTaskDTO} the mapped result of the subtask
+	 */
 	public static SubtaskDTO mapToDTO(Subtask subtask) {
 		SubtaskDTO subtaskDTO = new SubtaskDTO();
 		subtaskDTO.setId(subtask.getId());

@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Database object for user
+ */
 @Entity
 @Table(name="User")
 @Data @NoArgsConstructor @AllArgsConstructor
