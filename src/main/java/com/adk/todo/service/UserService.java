@@ -21,6 +21,9 @@ import com.adk.todo.util.DTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Implementation of the User service interface
+ */
 @Service @RequiredArgsConstructor @Slf4j
 public class UserService implements IUserService {
 
@@ -99,5 +102,22 @@ public class UserService implements IUserService {
 		task.setUserId(user.getId());
 		User savedUser = userRepo.save(user);
 		return DTOMapper.mapToDTO(savedUser);
+	}
+
+	/**
+	  * {@inheritDoc}
+	  */
+	@Override
+	public void deleteUser(User user) {
+		//Verifies an id was passed in
+		if( user.getId() == null || user.getId().isBlank())
+			throw new FieldBlankException(Task.class, "id", String.class.toString());
+		
+		Optional<User> foundUser = userRepo.findById(user.getId());
+		
+		//Verifies user Exists
+		if(foundUser.isEmpty())
+			throw new EntityNotFoundException(User.class, "User ID", user.getId());
+		userRepo.delete(user);
 	}
 }

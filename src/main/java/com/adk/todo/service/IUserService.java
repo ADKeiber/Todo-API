@@ -37,4 +37,10 @@ public interface IUserService {
 	 * @return {@link UserDTO} mapped user Object
 	 */
 	public UserDTO addTaskToUser(User user, Task task);
+	
+	/**
+	 * Deletes a userc
+	 * @param user {@link User} the user to delete
+	 */
+	public void deleteUser(User user);
 }

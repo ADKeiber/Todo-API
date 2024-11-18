@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +66,32 @@ public class MainController {
 	@PostMapping("/createUser")
 	public ResponseEntity<Object> create(@RequestBody User user) throws Exception {
 		return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
+	}
+	
+	/**
+	 * Deletes a user by the id in the passed in user
+	 * @param user {@link User} The user to be delete
+	 * @return {@link ApiError} if there is an error finding the user by its ID, otherwise {@link HttpStatus.ok}
+	 * @throws Exception if there is an error finding the user by its ID
+	 */
+	@Operation(summary = "Deletes a user", description = "Deletes a user by taking in a JSON User Object. If required fields are blank/null inside of the request body or user.id doesn't exist an API Error will be returned. Fields Required: user.Id", responses = {
+			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
+					@ExampleObject(value = "{}") })),
+			@ApiResponse(description = "Bad Request/ Missing Required Field", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
+							+ "		\"status\":\"BAD_REQUEST\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
+							+ "		\"message\":\"One of the Required fields was missing for the passed in entity!\",\n"
+							+ "		\"debugMessage\":\"User was missing value of field 'id' which is of class java.lang.String\",\n"
+							+ "	}\n" + "}") })),
+			@ApiResponse(description = "Conflict/ User ID doesn't exist", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
+							+ "		\"status\":\"NOT_FOUND\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
+							+ "		\"message\":\"User was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
+							+ "		\"debugMessage\": null,\n" + "	}\n" + "}") })) })
+	@DeleteMapping("/deleteUser")
+	public ResponseEntity<Object> delete(@RequestBody User user) throws Exception {
+		userService.deleteUser(user);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	/**
