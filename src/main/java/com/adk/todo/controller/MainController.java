@@ -75,8 +75,7 @@ public class MainController {
 	 * @throws Exception if there is an error finding the user by its ID
 	 */
 	@Operation(summary = "Deletes a user", description = "Deletes a user by taking in a JSON User Object. If required fields are blank/null inside of the request body or user.id doesn't exist an API Error will be returned. Fields Required: user.Id", responses = {
-			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
-					@ExampleObject(value = "{}") })),
+			@ApiResponse(description = "Success", responseCode = "200"),
 			@ApiResponse(description = "Bad Request/ Missing Required Field", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
 					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
 							+ "		\"status\":\"BAD_REQUEST\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
@@ -89,11 +88,76 @@ public class MainController {
 							+ "		\"message\":\"User was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
 							+ "		\"debugMessage\": null,\n" + "	}\n" + "}") })) })
 	@DeleteMapping("/deleteUser")
-	public ResponseEntity<Object> delete(@RequestBody User user) throws Exception {
+	public ResponseEntity<Object> deleteUser(@RequestBody User user) throws Exception {
 		userService.deleteUser(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	@Operation(summary = "Update user", description = "Allows a user to be updated by taking in a JSON User Object. If required fields are blank/null inside of the request body an API Error will be returned. Fields Required: id, username, password", responses = {
+			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
+					@ExampleObject(value = "{\r\n" + "    \"id\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
+							+ "    \"username\": \"admin\",\r\n" + "    \"tasks\": [\r\n" + "        {\r\n"
+							+ "            \"id\": \"8ad48580-2748-49e0-b7e9-82366c124779\",\r\n"
+							+ "            \"userId\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
+							+ "            \"description\": \"Task 1\",\r\n" + "            \"status\": \"TODO\",\r\n"
+							+ "            \"subtasks\": []\r\n" + "        },\r\n" + "        {\r\n"
+							+ "            \"id\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
+							+ "            \"userId\": \"1c7740e6-89c8-4a00-9373-7a944acf6844\",\r\n"
+							+ "            \"description\": \"Task 2\",\r\n" + "            \"status\": \"TODO\",\r\n"
+							+ "            \"subtasks\": [\r\n" + "                {\r\n"
+							+ "                    \"id\": \"02735e20-19ac-4f46-b22d-df463c4a7595\",\r\n"
+							+ "                    \"parentTaskId\": \"ebab59b4-a148-4ff0-b1fb-95c71d8ca0c3\",\r\n"
+							+ "                    \"description\": \"Subtask 1\",\r\n"
+							+ "                    \"status\": \"IN_PROGRESS\"\r\n" + "                }\r\n"
+							+ "            ]\r\n" + "        }\r\n" + "    ]\r\n" + "}") })),
+			@ApiResponse(description = "Not Found/ No User with that ID", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
+							+ "		\"status\":\"NOT_FOUND\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
+							+ "		\"message\": \"User was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
+							+ "		\"debugMessage\":null,\n" + "	}\n" + "}") })),
+			@ApiResponse(description = "Bad Request/ Missing Required Field", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
+							+ "		\"status\":\"BAD_REQUEST\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
+							+ "		\"message\":\"One of the Required fields was missing for the passed in entity!\",\n"
+							+ "		\"debugMessage\":\"User was missing value of field 'username' which is of class java.lang.String\",\n"
+							+ "	}\n" + "}") })), })
+	@PostMapping("/updateUser")
+	public ResponseEntity<Object> updateUser(@RequestBody User user) throws Exception {
+		return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+	}
+	
+	@Operation(summary = "Deletes a task", description = "Deletes a task by taking in a task ID. If task doesn't exist with passed in ID an API Error will be returned.", responses = {
+			@ApiResponse(description = "Success", responseCode = "200"),
+			@ApiResponse(description = "Conflict/ Task ID doesn't exist", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
+							+ "		\"status\":\"NOT_FOUND\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
+							+ "		\"message\":\"Task was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
+							+ "		\"debugMessage\": null,\n" + "	}\n" + "}") })) })
+	@DeleteMapping("/deleteTask/{taskId}")
+	public ResponseEntity<Object> deleteTask(@PathVariable String taskId) throws Exception {
+		taskService.deleteTask(taskId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@Operation(summary = "Deletes a subtask", description = "Deletes a subtask by taking in a subtask ID. If subtask doesn't exist with passed in ID an API Error will be returned.", responses = {
+			@ApiResponse(description = "Success", responseCode = "200"),
+			@ApiResponse(description = "Conflict/ Subtask ID doesn't exist", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class), examples = {
+					@ExampleObject(value = "{\n" + "	\"apierror\":\n" + "	{\n"
+							+ "		\"status\":\"NOT_FOUND\",\n" + "		\"timestamp\":\"11-11-2024 10:19:28\",\n"
+							+ "		\"message\":\"Subtask was not found for parameters {id=a3cffc8b-bcfa-4143-8f75-79639efde58}\",\n"
+							+ "		\"debugMessage\": null,\n" + "	}\n" + "}") })) })
+	@DeleteMapping("/deleteSubtask/{subtaskId}")
+	public ResponseEntity<Object> deleteSubtask(@PathVariable String subtaskId) throws Exception {
+		taskService.deleteSubtask(subtaskId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	/**
 	 * Authenticates the user has the correct username and password combo
 	 * @param user {@link User} the user to authenticate

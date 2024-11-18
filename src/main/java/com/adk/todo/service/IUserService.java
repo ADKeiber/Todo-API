@@ -31,6 +31,13 @@ public interface IUserService {
 	public User getUserById(String id);
 	
 	/**
+	 * Updates a user
+	 * @param user {@link User} the new user information
+	 * @return {@link UserDTO} mapped user object
+	 */
+	public UserDTO updateUser(User user);
+	
+	/**
 	 * Adds a task to a given user
 	 * @param user {@link User} user that will have task added
 	 * @param task {@link Task} task that will be added to a user
@@ -39,7 +46,7 @@ public interface IUserService {
 	public UserDTO addTaskToUser(User user, Task task);
 	
 	/**
-	 * Deletes a userc
+	 * Deletes a user
 	 * @param user {@link User} the user to delete
 	 */
 	public void deleteUser(User user);

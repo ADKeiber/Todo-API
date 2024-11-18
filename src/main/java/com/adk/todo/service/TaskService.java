@@ -137,4 +137,43 @@ public class TaskService implements ITaskService{
 		return DTOMapper.mapToDTO(returnedSubtask);
 	}
 
+	/**
+	  * {@inheritDoc}
+	  */
+	@Override
+	public void deleteTask(String taskId) {
+		//Verifies an id was passed in
+		if( taskId == null || taskId.isBlank())
+			throw new FieldBlankException(Task.class, "id", String.class.toString());
+		
+		Optional<Task> foundTask = taskRepo.findById(taskId);
+		
+		//Verifies task Exists
+		if(foundTask.isEmpty())
+			throw new EntityNotFoundException(Task.class, "id", taskId);
+		
+		Optional<User> foundUser = userRepo.findById(foundTask.get().getUserId());
+		
+		User user = foundUser.get();
+		
+		
+		taskRepo.delete(foundTask.get());
+	}
+
+	/**
+	  * {@inheritDoc}
+	  */
+	@Override
+	public void deleteSubtask(String subtaskId) {
+		//Verifies an id was passed in
+		if( subtaskId == null || subtaskId.isBlank())
+			throw new FieldBlankException(Subtask.class, "id", String.class.toString());
+		
+		Optional<Subtask> foundSubtask = subtaskRepo.findById(subtaskId);
+		
+		//Verifies subtask Exists
+		if(foundSubtask.isEmpty())
+			throw new EntityNotFoundException(Subtask.class, "id", subtaskId);
+		subtaskRepo.delete(foundSubtask.get());
+	}
 }

@@ -51,4 +51,16 @@ public interface ITaskService {
 	 * @return {@link SubtaskDTO} the saved subtask converted to its {@link SubTaskDTO}
 	 */
 	public SubtaskDTO updateSubtask(Subtask subtask);
+	
+	/**
+	 * Deletes a task by its ID
+	 * @param taskId {@link String} the id of the task
+	 */
+	public void deleteTask(String taskId);
+	
+	/**
+	 * Deletes a subtask
+	 * @param subtaskId {@link String} the id of the subtask
+	 */
+	public void deleteSubtask(String subtaskId);
 }
