@@ -94,10 +94,13 @@ public class MainController {
 	}
 	
 	/**
-	 * 
-	 * @param user
-	 * @return
-	 * @throws Exception
+	 * Updates a user to the passed in value.
+	 * User is updated based on its ID. If the ID doesn't exist user will not be updated.
+	 * <p>
+	 * NOTE: A user's username and password can be updated with the passed in object
+	 * @param user {@link User} the user to update
+	 * @return {@link ApiError} if there is an error finding the user by its ID or required field is missing, otherwise {@link UserDTO}
+	 * @throws Exception if there is an error finding the user by its ID or required field is missing
 	 */
 	@Operation(summary = "Update user", description = "Allows a user to be updated by taking in a JSON User Object. If required fields are blank/null inside of the request body an API Error will be returned. Fields Required: id, username, password", responses = {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = UserDTO.class), examples = {
